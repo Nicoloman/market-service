@@ -29,10 +29,11 @@ public class Category {
 
     
 
-    public Category(String description, String name) {
+    public Category(String name, String description) {
         this();
         this.description = description;
         this.name = name;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Category() {

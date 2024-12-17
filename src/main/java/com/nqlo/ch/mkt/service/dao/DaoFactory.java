@@ -3,6 +3,7 @@ package com.nqlo.ch.mkt.service.dao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nqlo.ch.mkt.service.entities.Category;
 import com.nqlo.ch.mkt.service.entities.Product;
 import com.nqlo.ch.mkt.service.entities.User;
 
@@ -21,12 +22,6 @@ public class DaoFactory {
         em.persist(product);
     }
 
-    // Actualizar un producto
-    @Transactional
-    public void actualizarProducto(Product product) {
-        em.merge(product);
-    }
-
     // Eliminar un producto
     @Transactional
     public void eliminarProducto(Long id) {
@@ -36,24 +31,33 @@ public class DaoFactory {
         }
     }
 
-        // Guardar un usuario
-        @Transactional
-        public void persistirUsuario(User user) {
-            em.persist(user);
+    // Guardar un usuario
+    @Transactional
+    public void persistirUsuario(User user) {
+        em.persist(user);
+    }
+
+    // Eliminar un usuario
+    @Transactional
+    public void eliminarUsuario(Long id) {
+        User user = em.find(User.class, id);
+        if (user != null) {
+            em.remove(user);
         }
-    
-        // Actualizar un usuario
-        @Transactional
-        public void actualizarUsuario(User user) {
-            em.merge(user);
+    }
+
+    // Guardar un Categoria
+    @Transactional
+    public void persistirCategoria(Category category) {
+        em.persist(category);
+    }
+
+    // Eliminar un Categoria
+    @Transactional
+    public void eliminarCategoria(Long id) {
+        Category category = em.find(Category.class, id);
+        if (category != null) {
+            em.remove(category);
         }
-    
-        // Eliminar un usuario
-        @Transactional
-        public void eliminarUsuario(Long id) {
-            User user = em.find(User.class, id);
-            if (user != null) {
-                em.remove(user);
-            }
-        }
+    }
 }
