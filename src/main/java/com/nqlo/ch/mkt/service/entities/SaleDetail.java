@@ -26,7 +26,7 @@ public class SaleDetail {
     private Product product;
 
     @Column(nullable = false)
-    private Long quantity;
+    private int quantity;
 
     @Column(nullable = false)
     private Long price;
@@ -35,10 +35,50 @@ public class SaleDetail {
     public SaleDetail() {}
 
     // Constructor completo
-    public SaleDetail(Sale sale, Product product, Long quantity, Long price) {
+    public SaleDetail(Sale sale, Product product, int quantity, Long price) {
         this.sale = sale;
         this.product = product;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Sale getSale() {
+        return sale;
+    }
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
         this.price = price;
     }
 }

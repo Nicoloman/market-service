@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nqlo.ch.mkt.service.entities.Category;
 import com.nqlo.ch.mkt.service.entities.Product;
+import com.nqlo.ch.mkt.service.entities.Sale;
+import com.nqlo.ch.mkt.service.entities.SaleDetail;
 import com.nqlo.ch.mkt.service.entities.User;
 
 import jakarta.persistence.EntityManager;
@@ -96,4 +98,54 @@ public class DaoFactory {
             e.printStackTrace(System.err);
         }
     }
+
+    // Guardar una Venta
+@Transactional
+public void persistSale(Sale sale) {
+    try {
+        em.persist(sale);
+        System.out.println("Sale with ID: " + sale.getId() + " created successfully!");
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+}
+
+// Eliminar una Venta
+@Transactional
+public void deleteSale(Long id) {
+    try {
+        Sale sale = em.find(Sale.class, id);
+        if (sale != null) {
+            em.remove(sale);
+            System.out.println("Sale with ID: " + sale.getId() + " deleted");
+        }
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+}
+
+// Guardar un Detalle de Venta
+@Transactional
+public void persistSaleDetail(SaleDetail saleDetail) {
+    try {
+        em.persist(saleDetail);
+        System.out.println("SaleDetail with ID: " + saleDetail.getId() + " created successfully!");
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+}
+
+// Eliminar un Detalle de Venta
+@Transactional
+public void deleteSaleDetail(Long id) {
+    try {
+        SaleDetail saleDetail = em.find(SaleDetail.class, id);
+        if (saleDetail != null) {
+            em.remove(saleDetail);
+            System.out.println("SaleDetail with ID: " + saleDetail.getId() + " deleted");
+        }
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+}
 }
