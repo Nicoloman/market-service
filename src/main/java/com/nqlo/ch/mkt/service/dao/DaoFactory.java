@@ -10,6 +10,8 @@ import com.nqlo.ch.mkt.service.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+
+// Clase persiste o elimina las entidades en la base de datos.
 @Service
 public class DaoFactory {
 
@@ -18,46 +20,80 @@ public class DaoFactory {
 
     // Guardar un producto
     @Transactional
-    public void persistirProducto(Product product) {
-        em.persist(product);
+    public void persistProduct(Product product) {
+
+        try {
+            em.persist(product);
+            System.out.println("Product: " + product.getName() + " created succesfully!");
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
     }
 
     // Eliminar un producto
     @Transactional
-    public void eliminarProducto(Long id) {
-        Product product = em.find(Product.class, id);
-        if (product != null) {
-            em.remove(product);
+    public void deleteProduct(Long id) {
+        try {
+            Product product = em.find(Product.class, id);
+            if (product != null) {
+                em.remove(product);
+                System.out.println("Product: " + product.getName() + "deleted");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
         }
     }
 
     // Guardar un usuario
     @Transactional
-    public void persistirUsuario(User user) {
-        em.persist(user);
+    public void persistUser(User user) {
+        
+        try {
+            em.persist(user);
+            System.out.println("User: " + user.getName() + " created succesfully!");
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
     }
 
     // Eliminar un usuario
     @Transactional
-    public void eliminarUsuario(Long id) {
-        User user = em.find(User.class, id);
-        if (user != null) {
-            em.remove(user);
+    public void deleteUser(Long id) {
+        try {
+            User user = em.find(User.class, id);
+            if (user != null) {
+                em.remove(user);
+                System.out.println("User: " + user.getName() + "deleted");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
         }
     }
 
     // Guardar un Categoria
     @Transactional
-    public void persistirCategoria(Category category) {
-        em.persist(category);
+    public void persistCategory(Category category) {
+        try {
+            em.persist(category);
+            System.out.println("Category: " + category.getName() + " created succesfully!");
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
+        
     }
 
     // Eliminar un Categoria
     @Transactional
-    public void eliminarCategoria(Long id) {
-        Category category = em.find(Category.class, id);
-        if (category != null) {
-            em.remove(category);
+    public void deleteCategory(Long id) {
+
+        try {
+            Category category = em.find(Category.class, id);
+            if (category != null) {
+                em.remove(category);
+                System.out.println("Category: " + category.getName() + "deleted");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
         }
     }
 }
