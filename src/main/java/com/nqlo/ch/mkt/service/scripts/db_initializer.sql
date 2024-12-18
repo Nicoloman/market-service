@@ -1,13 +1,4 @@
-CREATE DATABASE IF NOT EXISTS marketservice;
-DROP DATABASE marketservice;
+CREATE DATABASE IF NOT EXISTS marketservice;    -- inicializar DB.
 
-USE marketservice;
 
-SELECT * from users;
-SELECT * from products;
-SELECT * from categories;
-SELECT * from sales; 
-
-DELETE FROM users;
-DELETE FROM products;
-DELETE FROM categories;
+DROP DATABASE marketservice;    -- DROPPEAR eliminar registros.
