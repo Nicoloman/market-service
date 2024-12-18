@@ -11,3 +11,9 @@ SELECT * from sales;
 DELETE FROM users;
 DELETE FROM products;
 DELETE FROM categories;
+
+
+USE pruebas;
+
+
+SELECT * FROM usuarios;
