@@ -1,4 +1,7 @@
-# Market Service, Lomanto Nicolas Franco, Coderhouse.
+# Lomanto Nicolas Franco.
+
+## Market Service App.
+### CoderHouse.
 
 Este proyecto es un servicio para la gestión de productos, ventas y usuarios en un mercado.
 
