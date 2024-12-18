@@ -51,9 +51,9 @@ public class MarketServiceApplication implements CommandLineRunner {
             dao.persistCategory(verano);
 
             // Creamos los productos
-            Product product00 = new Product("Mate", "El mejor mate de vas a ver en tu vida", cocina, 15000L, 10);
-            Product product01 = new Product("Taza", "Una taza bonita", accesorios, 5000L, 20);
-            Product product02 = new Product("Pelota de playa", "Pelota para el verano", verano, 2000L, 50);
+            Product product00 = new Product("Mate", "El mejor mate que vas a ver en tu vida", cocina, 15000L, 10);
+            Product product01 = new Product("Taza", "Una taza de Star Wars", accesorios, 5000L, 20);
+            Product product02 = new Product("Pelota de playa", "Un pelota de esas que siempre ves en la costa", verano, 2000L, 50);
 
             // Persisitimos los productos
             dao.persistProduct(product00);
