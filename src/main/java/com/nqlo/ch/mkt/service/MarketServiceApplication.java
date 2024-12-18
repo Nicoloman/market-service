@@ -71,7 +71,8 @@ public class MarketServiceApplication implements CommandLineRunner {
             for (Product product : products) {
                 total += product.getPrice() * sale.getQuantity();    // Use the quantity sold instead of stock
             }
-            System.out.println("Venta realizada con éxito!");
+
+            System.out.println("Sell persisted and product stock updated succesfully !");
 
         } catch (Exception e) {
             e.printStackTrace(System.err);
