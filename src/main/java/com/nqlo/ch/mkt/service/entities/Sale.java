@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 
@@ -26,6 +27,12 @@ public class Sale {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+     // Me genera el createdAt para no tener que mandarlo en el JSON
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = LocalDateTime.now();
+    }
 
     private int quantity;
 

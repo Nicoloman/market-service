@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nqlo.ch.mkt.service.dto.ProductDTO;
+import com.nqlo.ch.mkt.service.entities.Category;
 import com.nqlo.ch.mkt.service.entities.Product;
+import com.nqlo.ch.mkt.service.services.CategoryService;
 import com.nqlo.ch.mkt.service.services.ProductService;
 
 @RestController
@@ -24,6 +27,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -50,28 +56,54 @@ public class ProductController {
     }
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO ProductDTO) {
         try {
+            // Buscar la categoría por ID
+            Category category = categoryService.findById(ProductDTO.getCategoryId());
+            
+            // Crear el producto y asignar la categoría
+            Product product = new Product();
+            product.setName(ProductDTO.getName());
+            product.setDescription(ProductDTO.getDescription());
+            product.setCategory(category); // Asignar la categoría encontrada
+            product.setPrice(ProductDTO.getPrice());
+            product.setStock(ProductDTO.getStock());
+    
+            // Guardar el producto
             Product newProduct = productService.save(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newProduct); //201
+    
+            return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(null); // Manejo de error si no se encuentra la categoría
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-@PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<Product> updateProduct(@RequestBody Long id, Product product){
-    try {
-        product.setId(id);
-        Product updatedProduct = productService.updateById(id, product);
-        return updatedProduct != null ? ResponseEntity.ok(updatedProduct) : ResponseEntity.notFound().build();
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        try {
+            // Buscar la categoría por ID
+            Category category = categoryService.findById(productDTO.getCategoryId());
+            
+            // Crear el producto y asignar la categoría
+            Product product = new Product();
+            product.setId(id); // Asignar el id del producto a actualizar
+            product.setName(productDTO.getName());
+            product.setDescription(productDTO.getDescription());
+            product.setCategory(category); // Asignar la categoría encontrada
+            product.setPrice(productDTO.getPrice());
+            product.setStock(productDTO.getStock());
+    
+            // Actualizar el producto
+            Product updatedProduct = productService.updateById(id, product);
+    
+            return updatedProduct != null ? ResponseEntity.ok(updatedProduct) : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build(); // Si el producto no se encuentra
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 

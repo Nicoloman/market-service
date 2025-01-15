@@ -40,17 +40,11 @@ public class ProductService {
 
         product.setPrice(updatedproduct.getPrice());
         product.setStock(updatedproduct.getStock());
+        product.setCategory(updatedproduct.getCategory());
+        product.setDescription(updatedproduct.getDescription());
 
         if (product.getName() == null) {
             product.setName(updatedproduct.getName());
-        }
-
-        if (product.getDescription() == null) {
-            product.setDescription(updatedproduct.getDescription());
-        }
-
-        if (product.getCategory() == null) {
-            product.setCategory(updatedproduct.getCategory());
         }
 
         return productRepository.save(product);

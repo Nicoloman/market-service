@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 
@@ -25,7 +26,14 @@ public class Category {
     @Column(name= "description", nullable = false) //Unico y No Nulo
 	private String description;
 
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
+
+     // Me genera el createdAt para no tener que mandarlo en el JSON
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = LocalDateTime.now();
+    }
 
     
 

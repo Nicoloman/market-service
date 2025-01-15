@@ -42,13 +42,9 @@ public class UserService {
         user.setRole(updatedUser.getRole());
 
         if (user.getPassword() == null) {
-            user.setPassword(updatedUser.getPassword()); //Si el user no tiene contraseña se la setteamos.
+            user.setPassword(updatedUser.getPassword());
         }
-
-        if (user.getRole() == null) {
-            user.setRole(updatedUser.getRole()); //Si el user no tiene Role se lo setteamos.
-        }
-
+    
         return userRepository.save(user);
     }
 
