@@ -1,3 +1,5 @@
+--Queries para ir debuggeando la app.
+
 CREATE DATABASE IF NOT EXISTS marketservice;
 DROP DATABASE marketservice;
 
@@ -11,9 +13,3 @@ SELECT * from sales;
 DELETE FROM users;
 DELETE FROM products;
 DELETE FROM categories;
-
-
-USE pruebas;
-
-
-SELECT * FROM usuarios;
