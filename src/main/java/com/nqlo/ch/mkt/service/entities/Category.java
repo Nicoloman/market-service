@@ -25,7 +25,7 @@ public class Category {
     @Column(name= "description", nullable = false) //Unico y No Nulo
 	private String description;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     
 
@@ -33,7 +33,7 @@ public class Category {
         this();
         this.description = description;
         this.name = name;
-        this.createdAt = LocalDateTime.now();
+        this.created_at = LocalDateTime.now();
     }
 
     public Category() {
@@ -64,12 +64,12 @@ public class Category {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getcreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setcreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
   
 }

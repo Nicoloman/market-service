@@ -6,12 +6,12 @@ import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
-public class MarketServiceApplication  {
+public class FacturacionSegundaEntregaLomanto  {
 
 
 
     public static void main(String[] args) {
-        SpringApplication.run(MarketServiceApplication.class, args);
+        SpringApplication.run(FacturacionSegundaEntregaLomanto.class, args);
     }
 
     @Bean

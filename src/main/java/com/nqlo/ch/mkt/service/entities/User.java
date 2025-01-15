@@ -22,6 +22,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Column(nullable = false)
     private String password;
 

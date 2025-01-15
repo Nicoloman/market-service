@@ -36,7 +36,7 @@ public class Product {
     private int stock;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     // Constructor vacío
     public Product() {}
@@ -48,7 +48,7 @@ public class Product {
         this.category = category;
         this.price = price;
         this.stock = stock;
-        this.createdAt = LocalDateTime.now();
+        this.created_at = LocalDateTime.now();
     }
 
     public long getId() {
@@ -99,12 +99,12 @@ public class Product {
         this.stock = stock;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getcreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setcreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
     
 }

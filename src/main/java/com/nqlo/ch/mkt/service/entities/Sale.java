@@ -31,7 +31,7 @@ public class Sale {
 
     private Long total;
     
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     public Sale( Product product, int quantity, User user) {
         this.product = product;
@@ -39,7 +39,7 @@ public class Sale {
         this.user = user;
 
         this.total = product.getPrice() * quantity;
-        this.createdAt = LocalDateTime.now();
+        this.created_at = LocalDateTime.now();
     }
 
     
@@ -85,11 +85,11 @@ public class Sale {
         this.total = total;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getcreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setcreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 }
