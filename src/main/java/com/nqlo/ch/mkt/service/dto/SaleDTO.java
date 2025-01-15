@@ -1,35 +1,22 @@
 package com.nqlo.ch.mkt.service.dto;
 
-import java.time.LocalDateTime;
-
-import com.nqlo.ch.mkt.service.entities.Product;
-import com.nqlo.ch.mkt.service.entities.User;
-
 public class SaleDTO {
 
-    private Long id;
-    private User user;
-    private Product product;
+    private Long product_id;
+    private Long user_id;
     private int quantity;
-    private Long Data;
-    private LocalDateTime created_at;
-    public Long getId() {
-        return id;
+    private Long total;
+    public Long getProduct_id() {
+        return product_id;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
     }
-    public User getUser() {
-        return user;
+    public Long getUser_id() {
+        return user_id;
     }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
     public int getQuantity() {
         return quantity;
@@ -37,11 +24,11 @@ public class SaleDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public Long getData() {
-        return Data;
+    public Long getTotal() {
+        return total;
     }
-    public void setData(Long data) {
-        Data = data;
+    public void setTotal(Long total) {
+        this.total = total;
     }
     
 }
