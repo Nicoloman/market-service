@@ -30,12 +30,12 @@ public class SaleService {
 	}
 
 	@Transactional
-	public Sale createSale(Sale sale){
+	public Sale save(Sale sale){
 		return saleRepository.save(sale);
 	}
 
 	@Transactional
-	public Sale updateSale(Long id, Sale updatedSale){
+	public Sale updateById(Long id, Sale updatedSale){
 		Sale sale = saleRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Sale with id:"+ id + "couldnt be found"));
 
 		//Actualizamos el registro
@@ -49,7 +49,7 @@ public class SaleService {
 	}
 
 	@Transactional
-	public void deleteSale(Long id){
+	public void deleteById(Long id){
 		if(!saleRepository.existsById(id)){
 			throw new IllegalArgumentException("Sale with id:"+ id + "couldnt be found");
 		} 
