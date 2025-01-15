@@ -61,8 +61,8 @@ public class CategoryController {
         }
     }
 
-@PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<Category> updateCategory(@RequestBody Long id, Category category){
+@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category){
     try {
         category.setId(id);
         Category updatedCategory = categoryService.updateById(id, category);
