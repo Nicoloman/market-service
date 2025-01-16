@@ -15,4 +15,4 @@ Antes de iniciar el servicio, asegúrate de inicializar la base de datos. El scr
 
 Para probar el funcionamiento de la API se puede importar la collection de postman para obtener los endpoints con sus respectivos bodys o pathvariables. 
 
-- [`db_initializer.sql`](src/main/java/com/nqlo/ch/mkt/resorces/market-service-api.postman_collection.json)
+- [`market-service-api`](src/main/java/com/nqlo/ch/mkt/resorces/market-service-api.postman_collection.json)
