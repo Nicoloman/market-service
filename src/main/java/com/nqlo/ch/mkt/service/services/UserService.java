@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nqlo.ch.mkt.service.entities.User;
-import com.nqlo.ch.mkt.service.repositories.SaleRepository;
 import com.nqlo.ch.mkt.service.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -17,8 +16,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SaleRepository saleRepository;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -26,7 +23,7 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id: " + id + "couldnt be found"));
+                .orElseThrow(() -> new IllegalArgumentException("User with id: " + id + " couldnt be found"));
     }
 
     @Transactional
