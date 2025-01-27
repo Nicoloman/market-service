@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     // Handle duplicate entry
     @ExceptionHandler(DuplicateEntryException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateEntryException(DuplicateEntryException ex) {
-        String message = "Duplicated entry for field '" + ex.getField() + "'.";
+        String message = ex.getMessage() != null ? ex.getMessage() : "Duplicated entry for field '" + ex.getField() + "'.";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(message, "Bad Request", HttpStatus.BAD_REQUEST.value()));
     }

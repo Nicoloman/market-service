@@ -26,12 +26,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "Name is required")
+    @NotNull(message = "name is required")
     private String name;
 
     
-    @NotNull(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @NotNull(message = "email is required")
+    @Email(message = "email should be valid")
     private String email;
 
     public long getId() {
@@ -42,11 +42,11 @@ public class User {
         this.id = id;
     }
 
-    @NotNull(message = "Password is required")
+    @NotNull(message = "password is required")
     @Size(min = 8, message = "Password should be at least 8 chars long")
     private String password;
 
-    @NotNull(message = "Role is required")
+    @NotNull(message = "role is required")
     private String role;
 
     @Column(name = "created_at", nullable = false)

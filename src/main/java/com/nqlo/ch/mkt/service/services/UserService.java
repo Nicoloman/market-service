@@ -25,7 +25,6 @@ public class UserService {
     @Autowired
     private Validator validator; // Inyección del validador de JSR-303
 
-
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -38,7 +37,7 @@ public class UserService {
     @Transactional
     public User save(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DuplicateEntryException("Email", user.getEmail() + "' is already taken.");
+            throw new DuplicateEntryException("Email ", "Email: '" + user.getEmail() + "' is already taken.");
         }
         return userRepository.save(user);
     }
@@ -48,13 +47,13 @@ public class UserService {
         // Check si existe
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " couldn't be found."));
-        
-                // Check si el email ya existe
+
+        // Check si el email ya existe
         if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-             Set<ConstraintViolation<User>> violations = validator.validateValue(User.class, "email", updatedUser.getEmail());
-        if (!violations.isEmpty()) {
-            throw new IllegalArgumentException("Email '" + updatedUser.getEmail() + "' is not valid.");
-        }
+            Set<ConstraintViolation<User>> violations = validator.validateValue(User.class, "email", updatedUser.getEmail());
+            if (!violations.isEmpty()) {
+                throw new IllegalArgumentException("Email '" + updatedUser.getEmail() + "' is not valid.");
+            }
             if (userRepository.existsByEmail(updatedUser.getEmail()) && !existingUser.getEmail().equals(updatedUser.getEmail())) {
                 throw new DuplicateEntryException("email", "Email '" + updatedUser.getEmail() + "' is already taken.");
             }
@@ -74,7 +73,7 @@ public class UserService {
     @Transactional
     public void deleteById(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User with id: " + id + "couldnt be found");
+            throw new ResourceNotFoundException("User with id: " + id + " could not be found.");
         }
         userRepository.deleteById(id);
     }

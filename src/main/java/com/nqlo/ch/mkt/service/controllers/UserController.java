@@ -74,15 +74,16 @@ public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User use
     }
 }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteById(id);
-            return ResponseEntity.noContent().build(); //204
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+@DeleteMapping(value = "/{id}")
+public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    try {
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build(); //204
+    } catch (ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(e.getMessage(), "Not Found", HttpStatus.NOT_FOUND.value()));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); //500
     }
+}
 }
