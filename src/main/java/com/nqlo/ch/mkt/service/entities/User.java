@@ -13,6 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
@@ -22,10 +26,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "Name is required")
     private String name;
 
-    @Column(nullable = false, unique = true)
+    
+    @NotNull(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
 
     public long getId() {
@@ -36,10 +42,11 @@ public class User {
         this.id = id;
     }
 
-    @Column(nullable = false)
+    @NotNull(message = "Password is required")
+    @Size(min = 8, message = "Password should be at least 8 chars long")
     private String password;
 
-    @Column(nullable = false)
+    @NotNull(message = "Role is required")
     private String role;
 
     @Column(name = "created_at", nullable = false)

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nqlo.ch.mkt.service.entities.User;
+import com.nqlo.ch.mkt.service.exceptions.DuplicateEntryException;
+import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
 import com.nqlo.ch.mkt.service.repositories.SaleRepository;
 import com.nqlo.ch.mkt.service.repositories.UserRepository;
 
@@ -26,11 +28,14 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id: " + id + "couldnt be found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " couldn't be found"));
     }
 
     @Transactional
     public User save(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new DuplicateEntryException("Email",user.getEmail() + "' is already taken.");
+        }
         return userRepository.save(user);
     }
 
