@@ -9,7 +9,7 @@ public class UpdateUtils {
     
     //Funcion que antes de actualizar se fija si el nuevo valor es  !null y !actual
     public static <T> void updateIfChanged(T newValue, Supplier<T> getter, Consumer<T> setter) {
-        if (newValue != null && !Objects.equals(newValue, getter.get())) {
+        if (newValue != null && !(newValue instanceof String && ((String) newValue).isEmpty()) && !Objects.equals(newValue, getter.get())) {
             setter.accept(newValue);
         }
     }
