@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nqlo.ch.mkt.service.entities.ErrorResponse;
 import com.nqlo.ch.mkt.service.entities.User;
+import com.nqlo.ch.mkt.service.exceptions.DuplicateEntryException;
+import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
 import com.nqlo.ch.mkt.service.services.UserService;
 
 import jakarta.validation.Valid;
@@ -42,29 +44,35 @@ public class UserController {
     }
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<Object> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-        StringBuilder errorMessages = new StringBuilder();
-        bindingResult.getAllErrors().forEach(error -> {
-            errorMessages.append(error.getDefaultMessage()).append(". ");
-        });
-        return ResponseEntity.badRequest().body(new ErrorResponse(errorMessages.toString(), null, 0)); // 400 Bad Request
-    }
-    User newUser = userService.save(user);
-    return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // 201 Created
-}
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        try {
-            user.setId(id);
-            User updatedUser = userService.updateById(id, user);
-            return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessages = new StringBuilder();
+            bindingResult.getAllErrors().forEach(error -> {
+                errorMessages.append(error.getDefaultMessage()).append(". ");
+            });
+            return ResponseEntity.badRequest().body(new ErrorResponse(errorMessages.toString(), null, 0)); // 400 Bad Request
         }
+        User newUser = userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // 201 Created
     }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
+    try {
+        user.setId(id); // Ensure the ID is correctly set
+        User updatedUser = userService.updateById(id, user);
+        return ResponseEntity.ok(updatedUser); // Return the updated user
+    } catch (DuplicateEntryException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage(), "Bad Request", HttpStatus.BAD_REQUEST.value()));
+    } catch (ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(e.getMessage(), "Not Found", HttpStatus.NOT_FOUND.value()));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("An unexpected error occurred: " + e.getMessage(), "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR.value()));
+    }
+}
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
