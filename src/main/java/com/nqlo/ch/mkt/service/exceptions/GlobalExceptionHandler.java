@@ -1,5 +1,7 @@
 package com.nqlo.ch.mkt.service.exceptions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,9 @@ import com.nqlo.ch.mkt.service.entities.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     // Handle duplicate entry
     @ExceptionHandler(DuplicateEntryException.class)
@@ -63,6 +68,7 @@ public class GlobalExceptionHandler {
     // General exception handler for other unhandled exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+        logger.error("Unexpected error occurred: ", ex); // Logs full stack trace
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("An unexpected error occurred: " + ex.getMessage(), "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
