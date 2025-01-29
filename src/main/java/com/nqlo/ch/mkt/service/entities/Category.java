@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -19,10 +20,11 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
     
-    
+    @NotNull(message = "name is required")
     @Column(name= "name", nullable = false) // No Nulo
 	private String name;
 
+    @NotNull(message = "description is required")
     @Column(name= "description", nullable = false) //Unico y No Nulo
 	private String description;
 
