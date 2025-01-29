@@ -22,7 +22,7 @@ public class CategoryService {
 
     public Category findById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Category with id: " + id + "couldnt be found"));
+                .orElseThrow(() -> new IllegalArgumentException("Category with id: " + id + " couldnt be found"));
     }
 
     @Transactional
@@ -32,7 +32,7 @@ public class CategoryService {
 
     @Transactional
     public Category updateById(Long id, Category updatedCategory) {
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Category with id: " + id + "couldnt be found"));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Category with id: " + id + " couldnt be found"));
 
         category.setDescription(updatedCategory.getDescription());
         category.setName(updatedCategory.getName());
@@ -45,7 +45,7 @@ public class CategoryService {
     @Transactional
     public void deleteById(Long id){
         if(!categoryRepository.existsById(id)){
-            throw new IllegalArgumentException("Category with id: " + id + "couldnt be found");
+            throw new IllegalArgumentException("Category with id: " + id + " couldnt be found");
         }
         categoryRepository.deleteById(id);
     }

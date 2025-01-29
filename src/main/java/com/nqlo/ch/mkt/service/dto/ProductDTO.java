@@ -1,11 +1,20 @@
 package com.nqlo.ch.mkt.service.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ProductDTO {
-    
+
+    @NotNull(message = "name is required")
     private String name;
+
+    @NotNull(message = "description is required")
     private String description;
+
+    @NotNull(message = "category is required")
     private Long categoryId;
+    @NotNull(message = "price is required")
     private Long price;
+    @NotNull(message = "stock is required")
     private int stock;
     public String getName() {
         return name;

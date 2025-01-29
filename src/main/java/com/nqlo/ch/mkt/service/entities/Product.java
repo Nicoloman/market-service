@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity //JPA Entity
@@ -24,20 +25,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "name is required")
     private String name;
 
-    @Column(nullable = false)
+    @NotNull(message = "description is required")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(nullable = false)
+    @NotNull(message = "price is required")
     private Long price;
 
-    @Column(nullable = false)
+    @NotNull(message = "stock is required")
     private int stock;
 
     @Column(name = "created_at", nullable = false)

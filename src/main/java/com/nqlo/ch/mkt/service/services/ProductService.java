@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nqlo.ch.mkt.service.entities.Product;
+import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
 import com.nqlo.ch.mkt.service.repositories.CategoryRepository;
 import com.nqlo.ch.mkt.service.repositories.ProductRepository;
+import static com.nqlo.ch.mkt.service.utils.UpdateUtils.updateIfChanged;
 
 import jakarta.transaction.Transactional;
 
@@ -26,7 +28,7 @@ public class ProductService {
 
     public Product findById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product with id: " + id + "couldnt be found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product with id: " + id + " couldn't be found"));
     }
 
     @Transactional
@@ -36,16 +38,13 @@ public class ProductService {
 
     @Transactional
     public Product updateById(Long id, Product updatedproduct) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product with id: " + id + "couldnt be found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product with id: " + id + "couldnt be found"));
 
-        product.setPrice(updatedproduct.getPrice());
-        product.setStock(updatedproduct.getStock());
-        product.setCategory(updatedproduct.getCategory());
-        product.setDescription(updatedproduct.getDescription());
-
-        if (product.getName() == null) {
-            product.setName(updatedproduct.getName());
-        }
+        updateIfChanged(updatedproduct.getName(), product::getName, product::setName);
+        updateIfChanged(updatedproduct.getPrice(), product::getPrice, product::setPrice);
+        updateIfChanged(updatedproduct.getStock(),product::getStock, product::setStock);
+        updateIfChanged(updatedproduct.getCategory(),product::getCategory, product::setCategory);
+        updateIfChanged(updatedproduct.getDescription(),product::getDescription, product::setDescription);
 
         return productRepository.save(product);
     }
@@ -54,7 +53,7 @@ public class ProductService {
     @Transactional
     public void deleteById(Long id){
         if(!productRepository.existsById(id)){
-            throw new IllegalArgumentException("Product with id: " + id + "couldnt be found");
+            throw new ResourceNotFoundException("Product with id: " + id + " couldnt be found");
         }
         productRepository.deleteById(id);
     }
