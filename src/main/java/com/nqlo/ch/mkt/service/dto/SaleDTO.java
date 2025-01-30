@@ -12,6 +12,17 @@ public class SaleDTO {
     @NotNull(message = "items is required")
         private List<SaleItemDTO> items;
 
+    @NotNull(message = "description is required")
+        private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<SaleItemDTO> getItems() {
         return items;
     }

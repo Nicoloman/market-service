@@ -41,11 +41,12 @@ public class SaleService {
     }
 
     @Transactional
-    public Sale updateStatusById(Long id, SaleStatus newStatus) {
+    public Sale updateStatusById(Long id, SaleStatus newStatus, String description) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale with id: " + id + " couldn't be found"));
                 
         sale.setStatus(newStatus);
+        sale.setDescription(description);
         return saleRepository.save(sale);
     }
 

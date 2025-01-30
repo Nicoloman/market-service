@@ -72,7 +72,7 @@ public class SaleController {
         User user = userService.findById(saleDTO.getUser_id());
     
         List<SaleItem> saleItems = new ArrayList<>();
-        Sale sale = new Sale(user, saleItems); // Create the Sale object first
+        Sale sale = new Sale(user, saleItems, saleDTO.getDescription()); // Create the Sale object first
     
         Long totalSaleAmount = 0L;
     
@@ -109,12 +109,17 @@ public ResponseEntity<?> updateSaleStatus(@PathVariable Long id, @RequestBody Sa
         // Find the sale by ID
         Sale sale = saleService.findById(id);
         if (sale == null) {
-            return ResponseEntity.notFound().build(); // Return 404 if the sale does not exist
+            throw new ResourceNotFoundException("Sale with id: " + id + " couldn't be found");
         }
 
         // Check if the sale is already in the desired status
         if (sale.getStatus() == newStatus.getStatus()) {
             throw new IllegalStateException("Sale is already in the desired status" + sale.getStatus() + ".");
+        }
+
+        //Check if description isn't empty
+        if(newStatus.getDescription() == null || newStatus.getDescription().isEmpty()) {
+            throw new IllegalStateException("Description is required.");
         }
 
         // Handle status change logic
@@ -139,11 +144,12 @@ public ResponseEntity<?> updateSaleStatus(@PathVariable Long id, @RequestBody Sa
 
         // Update the sale status
         sale.setStatus(newStatus.getStatus());
-        Sale updatedSale = saleService.updateStatusById(sale.getId(), sale.getStatus());
+        sale.setDescription(newStatus.getDescription());
+        Sale updatedSale = saleService.updateStatusById(sale.getId(), sale.getStatus(), sale.getDescription());
 
         return ResponseEntity.ok(updatedSale); // Return the updated sale
     } catch (ResourceNotFoundException e) {
-        return ResponseEntity.notFound().build(); // Handle error if the sale is not found
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), "Status Update Error", 0)); // Handle illegal state error
     } catch (IllegalStateException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), "Status Update Error", 0)); // Handle illegal state error
     } catch (Exception e) {
@@ -154,11 +160,14 @@ public ResponseEntity<?> updateSaleStatus(@PathVariable Long id, @RequestBody Sa
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteSale(@PathVariable Long id) {
         try {
-            SaleStatusUpdateDTO newStatus = new SaleStatusUpdateDTO(SaleStatus.CANCELLED);
+            SaleStatusUpdateDTO newStatus = new SaleStatusUpdateDTO(SaleStatus.CANCELLED, "Sale was cancelled");
             updateSaleStatus(id, newStatus);
             saleService.deleteById(id);
             return ResponseEntity.noContent().build();
         }
+     catch (ResourceNotFoundException e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), "Status Update Error", 0)); // Handle illegal state error
+    }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Handle internal server error
         }

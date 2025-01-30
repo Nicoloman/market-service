@@ -47,6 +47,17 @@ public class Sale {
     @NotNull(message = "status is required")
     private SaleStatus status;
 
+    @NotNull
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setItems(List<SaleItem> items) {
         this.items = items;
     }
@@ -62,7 +73,6 @@ public class Sale {
         return user != null ? user.getId() : null;
     }
 
-    // Constructor sin parámetros (requerido por Hibernate)
     public Sale() {
     }
 
@@ -71,9 +81,10 @@ public class Sale {
         this.created_at = LocalDateTime.now();
     }
 
-    public Sale(User user, List<SaleItem> items) {
+    public Sale(User user, List<SaleItem> items, String description) {
         this.user = user;
         this.items = items;
+        this.description = description;
         this.total = items.stream().mapToLong(SaleItem::getTotal).sum();
         this.created_at = LocalDateTime.now();
         this.status = SaleStatus.SOLD; // Default status
