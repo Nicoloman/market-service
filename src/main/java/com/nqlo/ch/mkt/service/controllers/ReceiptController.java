@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nqlo.ch.mkt.service.entities.ErrorResponse;
 import com.nqlo.ch.mkt.service.entities.Receipt;
+import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
 import com.nqlo.ch.mkt.service.services.ReceiptService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,21 @@ public class ReceiptController {
     @GetMapping("/{id}")
     public ResponseEntity<Receipt> getReceiptById(@PathVariable Long id) {
         Receipt receipt = receiptService.findById(id);
+        return ResponseEntity.ok(receipt);
+    }
+
+    @Operation(summary = "Get Receipt by SaleId")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Receipt retrieved successfully", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Receipt.class))}),
+        @ApiResponse(responseCode = "404", description = "Receipt not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))})
+    @GetMapping("/sale/{saleId}")
+    public ResponseEntity<Receipt> getReceiptBySaleId(@PathVariable Long saleId) {
+        Receipt receipt = receiptService.findBySaleId(saleId);
+        if (receipt == null){
+            throw new ResourceNotFoundException("Recipt with sale id: " + saleId + " couldn't be found");
+        }
         return ResponseEntity.ok(receipt);
     }
 

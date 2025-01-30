@@ -5,12 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nqlo.ch.mkt.service.entities.Receipt;
 import com.nqlo.ch.mkt.service.entities.Sale;
 import com.nqlo.ch.mkt.service.entities.SaleStatus;
 import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
-import com.nqlo.ch.mkt.service.repositories.ProductRepository;
 import com.nqlo.ch.mkt.service.repositories.SaleRepository;
-import com.nqlo.ch.mkt.service.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -21,10 +20,8 @@ public class SaleService {
     private SaleRepository saleRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ReceiptService receiptService;
 
-    @Autowired
-    private UserRepository userRepository;
 
     public List<Sale> getSales() {
         return saleRepository.findAll();
@@ -44,7 +41,7 @@ public class SaleService {
     public Sale updateStatusById(Long id, SaleStatus newStatus, String description) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale with id: " + id + " couldn't be found"));
-                
+
         sale.setStatus(newStatus);
         sale.setDescription(description);
         return saleRepository.save(sale);
@@ -52,11 +49,16 @@ public class SaleService {
 
     @Transactional
     public void deleteById(Long id) {
-        if (!saleRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Sale with id: " + id + " couldnt be found");
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sale with id: " + id + " couldn't be found"));
+
+        // Antes de eliminar me fijo si existe un compronate asociado a la venta
+        Receipt receipt = receiptService.findBySaleId(sale.getId());
+        if (receipt == null) {
+            // Si no existe, lo genero y continuo con lo solicitado
+            receiptService.save(id);
         }
+
         saleRepository.deleteById(id);
     }
-
-    //Assign category to Sale
 }

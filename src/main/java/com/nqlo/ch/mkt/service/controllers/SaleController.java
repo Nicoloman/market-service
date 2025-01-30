@@ -202,8 +202,6 @@ public class SaleController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteSale(@PathVariable Long id) {
         try {
-            SaleStatusUpdateDTO newStatus = new SaleStatusUpdateDTO(SaleStatus.CANCELLED, "Sale was cancelled");
-            updateSaleStatus(id, newStatus);
             saleService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (ResourceNotFoundException e) {

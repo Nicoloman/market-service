@@ -2,14 +2,18 @@ package com.nqlo.ch.mkt.service.entities;
 
 
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,32 +25,50 @@ public class Receipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @NotNull(message = "sale is required")
-    private Sale sale;
+    private Long saleId; // Almacenar el ID de la venta
 
     @NotNull(message = "user is required")
     private String userName;
+
     @NotNull(message = "Date is required")
     private Date date;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "status is required")
     private SaleStatus status;
-
-
+    
+    @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ReceiptItem> items;
+    
+    private Long totalAmount;
+    
+    public Long getSaleId() {
+        return saleId;
+    }
+    public void setSaleId(Long saleId) {
+        this.saleId = saleId;
+    }
+    public List<ReceiptItem> getItems() {
+        return items;
+    }
+    public void setItems(List<ReceiptItem> items) {
+        this.items = items;
+    }
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(Long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public Sale getSale() {
-        return sale;
-    }
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
+    
     public String getUserName() {
         return userName;
     }

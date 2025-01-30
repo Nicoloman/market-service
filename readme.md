@@ -18,7 +18,7 @@ Para probar el funcionamiento de la API se puede importar la collection de postm
 - [`market-service-api`](src/main/java/com/nqlo/ch/mkt/resorces/market-service-api.postman_collection.json)
 
 
-# Proyecto Final - Modificaciones
+# Proyecto Final - Modificaciones y Mejoras
 
 ## ExceptionHandler
 - Se creó una clase GlobalExceptionHandler.java para manejar excepciones de manera global.
