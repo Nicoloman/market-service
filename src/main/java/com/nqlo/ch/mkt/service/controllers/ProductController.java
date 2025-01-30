@@ -24,6 +24,11 @@ import com.nqlo.ch.mkt.service.exceptions.ResourceNotFoundException;
 import com.nqlo.ch.mkt.service.services.CategoryService;
 import com.nqlo.ch.mkt.service.services.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -35,7 +40,16 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
-
+  @Operation(summary = "Get Products List")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Products retrieved successfully",
+                content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Product.class))}),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))}),})
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> getAllProducts() {
         try {
@@ -47,13 +61,24 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    @Operation(summary = "Get Product by ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Product retrieved successfully", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) }),
+			@ApiResponse(responseCode = "404", description = "Product not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = productService.findById(id);
         return ResponseEntity.ok(product);
     }
 
+    @Operation(summary = "Create Product")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "Product created successfully", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductDTO ProductDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -77,6 +102,13 @@ public class ProductController {
 
     }
 
+    @Operation(summary = "Update Product")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Product updated successfully", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(responseCode = "404", description = "Product not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
         try {
@@ -106,7 +138,13 @@ public class ProductController {
                         .body(new ErrorResponse("An unexpected error occurred: " + e.getMessage(), "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR.value()));
             }
     }
-
+    
+    @Operation(summary = "Delete Product")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Product deleted successfully", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)) }),
+			@ApiResponse(responseCode = "404", description = "Product not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         try {
