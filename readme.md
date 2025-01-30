@@ -16,3 +16,16 @@ Antes de iniciar el servicio, asegúrate de inicializar la base de datos. El scr
 Para probar el funcionamiento de la API se puede importar la collection de postman para obtener los endpoints con sus respectivos bodys o pathvariables. 
 
 - [`market-service-api`](src/main/java/com/nqlo/ch/mkt/resorces/market-service-api.postman_collection.json)
+
+
+# Proyecto Final - Modificaciones
+
+## ExceptionHandler
+- Se creó una clase GlobalExceptionHandler.java para manejar excepciones de manera global.
+- Se añadieron excepciones personalizadas como ResourceNotFoundException.
+
+## Swagger UI
+
+Se implementó Swagger para documentar y probar la API de manera interactiva.
+
+- [`swagger-ui`](http://localhost:8080/swagger-ui.html)
