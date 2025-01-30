@@ -18,6 +18,8 @@ import com.nqlo.ch.mkt.service.repositories.SaleRepository;
 @Service
 public class ReceiptService {
 
+    public static final String dateUrl = "http://worldclockapi.com/api/json/utc/now";
+    
     @Autowired
     private ReceiptRepository receiptRepository;
 
@@ -54,7 +56,6 @@ public class ReceiptService {
 
         // Obtener la fecha actual desde el servicio REST
         try {
-            String dateUrl = "http://worldclockapi.com/api/json/utc/now";
             Map<String, Object> response = restTemplate.getForObject(dateUrl, Map.class);
             String currentDateStr = (String) response.get("currentDateTime");
             Date currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'").parse(currentDateStr);
