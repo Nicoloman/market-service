@@ -27,5 +27,15 @@ Para probar el funcionamiento de la API se puede importar la collection de postm
 ## Swagger UI
 
 Se implementó Swagger para documentar y probar la API de manera interactiva.
-
 - [`swagger-ui`](http://localhost:8080/swagger-ui.html)
+
+## Receipt
+- Se agrego la entidad de 'Receipt', la cual exporta un comprobante al usuario. Esta obtiene la fecha de la api: ['WorldClockAPI']('http://worldclockapi.com/api/json/utc/now') . Si el servicio no responde, genera un objeto DATE y se lo setea en su lugar.
+
+- El comprobante es un registro unico el cual no puede ser actualizado ni eliminado.
+
+- Si una venta luego en Cancelada, se puede volver a generar un COMPROBANTE el cual reflecte esta modificacion.
+
+- Si se invoca al servicio de exportar un comrobante el caul ya fue exportado, el mismo simplemente lo retorna.
+
+
