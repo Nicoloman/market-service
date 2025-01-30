@@ -1,9 +1,6 @@
 package com.nqlo.ch.mkt.service.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -43,10 +39,6 @@ public class Product {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
-
-        @OneToMany(mappedBy = "product")
-    @JsonBackReference  // Evitar la serialización infinita
-    private List<Sale> sales;
 
 
      // Me genera el createdAt para no tener que mandarlo en el JSON

@@ -1,49 +1,61 @@
 package com.nqlo.ch.mkt.service.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "sales")
 public class Sale {
-@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
+    @NotNull(message = "user is required")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
-    private Product product;
+    @OneToMany(mappedBy = "sale", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<SaleItem> items = new ArrayList<>();
 
-    private int quantity;
+    public List<SaleItem> getItems() {
+        return items;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "status is required")
+    private SaleStatus status;
+
+    public void setItems(List<SaleItem> items) {
+        this.items = items;
+    }
+
+    @NotNull(message = "total is required")
     private Long total;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
-
-    // Agregar estos dos campos con @JsonProperty para serializar los IDs
-    @JsonProperty("product_id")
-    public Long getProductId() {
-        return product != null ? product.getId() : null;
-    }
 
     @JsonProperty("user_id")
     public Long getUserId() {
@@ -59,16 +71,13 @@ public class Sale {
         this.created_at = LocalDateTime.now();
     }
 
-    // Constructor para crear la venta
-    public Sale(Product product, int quantity, User user) {
-        this.product = product;
-        this.quantity = quantity;
+    public Sale(User user, List<SaleItem> items) {
         this.user = user;
-        this.total = product.getPrice() * quantity;
+        this.items = items;
+        this.total = items.stream().mapToLong(SaleItem::getTotal).sum();
+        this.created_at = LocalDateTime.now();
+        this.status = SaleStatus.SOLD; // Default status
     }
-
-
-    
 
     // Getters y Setters
     public Long getId() {
@@ -87,20 +96,12 @@ public class Sale {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public SaleStatus getStatus() {
+        return status;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setStatus(SaleStatus status) {
+        this.status = status;
     }
 
     public Long getTotal() {

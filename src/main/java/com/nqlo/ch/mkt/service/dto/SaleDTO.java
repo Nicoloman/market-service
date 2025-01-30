@@ -1,34 +1,32 @@
 package com.nqlo.ch.mkt.service.dto;
 
-public class SaleDTO {
+import java.util.List;
 
-    private Long product_id;
+import jakarta.validation.constraints.NotNull;
+
+public class SaleDTO {
+    
+    @NotNull(message = "user is required")
     private Long user_id;
-    private int quantity;
-    private Long total;
-    public Long getProduct_id() {
-        return product_id;
+
+    @NotNull(message = "items is required")
+        private List<SaleItemDTO> items;
+
+    public List<SaleItemDTO> getItems() {
+        return items;
     }
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+
+    public void setItems(List<SaleItemDTO> items) {
+        this.items = items;
     }
+
     public Long getUser_id() {
         return user_id;
     }
+
     public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-    public Long getTotal() {
-        return total;
-    }
-    public void setTotal(Long total) {
-        this.total = total;
-    }
+
     
 }
