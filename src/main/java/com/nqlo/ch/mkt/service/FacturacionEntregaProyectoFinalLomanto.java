@@ -4,12 +4,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class FacturacionSegundaEntregaLomanto  {
+public class FacturacionEntregaProyectoFinalLomanto  {
 
 
 
     public static void main(String[] args) {
-        SpringApplication.run(FacturacionSegundaEntregaLomanto.class, args);
+        SpringApplication.run(FacturacionEntregaProyectoFinalLomanto.class, args);
     }
 
 }
