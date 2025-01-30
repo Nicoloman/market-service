@@ -55,7 +55,7 @@ public class UserController {
 
     @Operation(summary = "Get User by ID")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Users retrieved successfully", content = {
+			@ApiResponse(responseCode = "200", description = "User retrieved successfully", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
 			@ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
@@ -67,7 +67,7 @@ public class UserController {
 
     @Operation(summary = "Create User")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "Users created successfully", content = {
+			@ApiResponse(responseCode = "201", description = "User created successfully", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
@@ -83,9 +83,9 @@ public class UserController {
         User newUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser); // 201 Created
     }
-    @Operation(summary = "Update User by ID")
+    @Operation(summary = "Update User")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Users updated successfully", content = {
+			@ApiResponse(responseCode = "200", description = "User updated successfully", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
@@ -107,9 +107,9 @@ public class UserController {
                     .body(new ErrorResponse("An unexpected error occurred: " + e.getMessage(), "Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }
     }
-    @Operation(summary = "Delete User by ID")
+    @Operation(summary = "Delete User")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "204", description = "Users deleted successfully", content = {
+			@ApiResponse(responseCode = "204", description = "User deleted successfully", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
 			@ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
